@@ -5,6 +5,9 @@ import webbrowser
 import psutil
 import subprocess
 import os
+import time
+import requests
+import wikipedia
 
 class AlexaAssistant:
     def __init__(self):
@@ -148,6 +151,118 @@ class AlexaAssistant:
             print(f"Error: {e}")
             return False
     
+    def search_web(self, query):
+        """Search the web using Google"""
+        try:
+            self.speak(f"Searching for {query}")
+            search_url = f"https://www.google.com/search?q={query.replace(' ', '+')}"
+            webbrowser.open(search_url)
+            print(f"✓ Searching for: {query}")
+            return True
+        except Exception as e:
+            self.speak("Could not search the web")
+            print(f"Error: {e}")
+            return False
+    
+    def get_weather(self, city="Oujda"):
+        """Get current weather using wttr.in API"""
+        try:
+            self.speak(f"Getting weather for {city}")
+            url = f"https://wttr.in/{city}?format=%C+%t+%h+%w"
+            response = requests.get(url, timeout=5)
+            
+            if response.status_code == 200:
+                weather_data = response.text.strip()
+                self.speak(f"The weather in {city} is {weather_data}")
+                print(f"🌤️  Weather: {weather_data}")
+                return True
+            else:
+                self.speak("Could not get weather information")
+                return False
+        except Exception as e:
+            self.speak("Weather service is not available")
+            print(f"Error: {e}")
+            return False
+    
+    def search_wikipedia(self, query):
+        """Search Wikipedia and get summary"""
+        try:
+            self.speak(f"Searching Wikipedia for {query}")
+            wikipedia.set_lang("en")
+            summary = wikipedia.summary(query, sentences=2)
+            print(f"📚 Wikipedia: {summary}")
+            self.speak(summary)
+            return True
+        except wikipedia.exceptions.DisambiguationError as e:
+            self.speak(f"Multiple results found. Please be more specific")
+            print(f"Options: {e.options[:3]}")
+            return False
+        except wikipedia.exceptions.PageError:
+            self.speak(f"No Wikipedia page found for {query}")
+            return False
+        except Exception as e:
+            self.speak("Could not search Wikipedia")
+            print(f"Error: {e}")
+            return False
+    
+    def get_news(self):
+        """Get latest news headlines from NewsAPI"""
+        try:
+            self.speak("Fetching latest news headlines")
+            # Using free news API that doesn't require key
+            url = "https://saurav.tech/NewsAPI/top-headlines/category/general/us.json"
+            response = requests.get(url, timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                articles = data.get('articles', [])[:3]
+                
+                if articles:
+                    self.speak("Here are the top news headlines")
+                    for i, article in enumerate(articles, 1):
+                        headline = article.get('title', 'No title')
+                        print(f"📰 {i}. {headline}")
+                        self.speak(f"Headline {i}. {headline}")
+                    return True
+                else:
+                    self.speak("No news found")
+                    return False
+            else:
+                self.speak("Could not fetch news")
+                return False
+        except Exception as e:
+            self.speak("News service is not available")
+            print(f"Error: {e}")
+            return False
+    
+    def shutdown_laptop(self):
+        """Shutdown laptop using Alt+F4 and Enter"""
+        try:
+            self.speak("Shutting down the laptop")
+            time.sleep(1)
+            pyautogui.hotkey('alt', 'f4')
+            time.sleep(0.5)
+            pyautogui.press('enter')
+            print("💻 Laptop shutting down...")
+            return True
+        except Exception as e:
+            self.speak("Could not shutdown laptop")
+            print(f"Error: {e}")
+            return False
+    
+    def search_youtube(self, query):
+        """Open YouTube and search for a query"""
+        try:
+            self.speak(f"Searching YouTube for {query}")
+            search_url = f"https://www.youtube.com/results?search_query={query.replace(' ', '+')}"
+            webbrowser.open(search_url)
+            print(f"✓ Searching YouTube for: {query}")
+            return True
+        except Exception as e:
+            self.speak("Could not search YouTube")
+            print(f"Error: {e}")
+            return False
+    
     def process_command(self, command):
         """Process Alexa commands"""
         if command is None:
@@ -162,8 +277,13 @@ class AlexaAssistant:
         command = command.replace("alexa", "").strip()
         
         # Exit commands
-        if any(word in command for word in ["stop", "exit", "quit", "goodbye", "bye", "shutdown"]):
+        if any(word in command for word in ["stop", "exit", "quit", "goodbye", "bye"]):
             self.speak("Goodbye! Have a great day!")
+            return False
+        
+        # Shutdown command
+        if "shutdown" in command or "shut down" in command:
+            self.shutdown_laptop()
             return False
         
         # Video control commands
@@ -179,6 +299,42 @@ class AlexaAssistant:
                 self.close_application(app_name)
             else:
                 self.speak("What should I close?")
+        
+        # Weather command
+        elif "weather" in command:
+            if "in" in command:
+                city = command.split("in")[-1].strip()
+                self.get_weather(city)
+            else:
+                self.get_weather()
+        
+        # News command
+        elif "news" in command or "headlines" in command:
+            self.get_news()
+        
+        # Wikipedia search command
+        elif "wikipedia" in command or "who is" in command or "what is" in command or "tell me about" in command:
+            query = command.replace("wikipedia", "").replace("who is", "").replace("what is", "").replace("tell me about", "").strip()
+            if query:
+                self.search_wikipedia(query)
+            else:
+                self.speak("What should I search for?")
+        
+        # General web search command
+        elif "search" in command and "youtube" not in command:
+            query = command.replace("search", "").replace("for", "").strip()
+            if query:
+                self.search_web(query)
+            else:
+                self.speak("What should I search for?")
+        
+        # YouTube search command
+        elif "youtube" in command and "search" in command:
+            query = command.replace("search youtube", "").replace("youtube search", "").replace("search on youtube", "").replace("for", "").strip()
+            if query:
+                self.search_youtube(query)
+            else:
+                self.speak("What should I search for on YouTube?")
         
         # Open commands
         elif "open" in command or "start" in command or "launch" in command:
@@ -212,7 +368,7 @@ class AlexaAssistant:
         
         # Help command
         elif "help" in command or "what can you do" in command:
-            self.speak("I can play or pause videos. Open or close applications. And open websites.")
+            self.speak("I can play or pause videos. Open or close applications. Search the web and YouTube. Get weather and news. Answer questions from Wikipedia. Shutdown the laptop. And open websites.")
             self.speak("Just say Alexa followed by your command.")
         else:
             self.speak("I didn't understand that command")
@@ -227,12 +383,20 @@ class AlexaAssistant:
         print("\n📋 COMMANDS:")
         print("   • 'Alexa play video' - Play video")
         print("   • 'Alexa pause video' - Pause video")
+        print("   • 'Alexa search ronaldo' - Search Google")
+        print("   • 'Alexa youtube search messi' - Search YouTube")
+        print("   • 'Alexa weather' - Get weather in Oujda")
+        print("   • 'Alexa weather in Paris' - Get weather in other city")
+        print("   • 'Alexa news' - Get latest headlines")
+        print("   • 'Alexa who is Einstein' - Wikipedia search")
+        print("   • 'Alexa what is Python' - Wikipedia search")
         print("   • 'Alexa open [app/website]' - Open application or website")
         print("   • 'Alexa close [app]' - Close application")
+        print("   • 'Alexa shutdown' - Shutdown laptop")
         print("   • 'Alexa goodbye' - Exit")
         print("\n" + "=" * 60)
         
-        self.speak("Hello mehdi! I'm Alexa. im here to help you?")
+        self.speak("Hello mehdi! I'm Alexa. I'm here to help you!")
         
         while True:
             try:
