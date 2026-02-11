@@ -232,7 +232,7 @@ class AlexaAssistant:
         print("   • 'Alexa goodbye' - Exit")
         print("\n" + "=" * 60)
         
-        self.speak("Hello mehdi! I'm Alexa. im here to help you?")
+        self.speak("Hello User! I'm Alexa. im here to help you?")
         
         while True:
             try:
