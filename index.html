@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALEXA - Desktop Voice Assistant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            text-align: center;
+        }
+        h2 {
+            margin-top: 30px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 15px;
+            overflow-x: auto;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>ALEXA – DESKTOP VOICE ASSISTANT</h1>
+    <p><strong>Technical Project Report</strong></p>
+    <p><strong>Prepared by:</strong> Mehdi Talalha</p>
+    <p><strong>Institution:</strong> Mehdi Ben Berka Secondary School</p>
+    <p><strong>Academic Year:</strong> 2026–2027</p>
+    <p><strong>Date:</strong> November 2026</p>
+    <hr>
+
+    <h2>Table of Contents</h2>
+    <ol>
+        <li>Introduction</li>
+        <li>Project Presentation and Objectives</li>
+        <li>Functional and Technical Requirements</li>
+        <li>Technologies Used</li>
+        <li>System Architecture and Design</li>
+        <li>Implementation and Development</li>
+        <li>Testing and Evaluation</li>
+        <li>Conclusion</li>
+        <li>References</li>
+    </ol>
+    <hr>
+
+    <h2>1. Introduction</h2>
+    <p>Most of the time, when we want to do something on a computer, we use a keyboard or a mouse. This works perfectly well, but I became interested in finding another way to interact with a computer, one that would allow me to give instructions simply by speaking.</p>
+    <p>This idea led me to develop <strong>Alexa</strong>, a desktop voice assistant using Python.</p>
+    <p>The principle behind the project is quite simple: the user gives a voice command, the program recognizes what was said, and then performs the requested action. For example, instead of opening a browser and searching for YouTube manually, the user can simply say: "Alexa, open YouTube."</p>
+    <p>To make this possible, I used several Python libraries. Each one has a different role, from recognizing speech to controlling the keyboard and managing running applications.</p>
+    <p>The project was also an opportunity for me to put what I have learned in programming into practice, especially object-oriented programming, conditional statements, loops, and the use of external libraries.</p>
+
+    <h2>2. Project Presentation and Objectives</h2>
+    <h3>2.1. Project Overview</h3>
+    <p>Alexa is a desktop voice assistant that I developed to perform some everyday computer operations through voice commands.</p>
+    <p>To interact with it, the user first needs to say the keyword <strong>"Alexa"</strong>, followed by the desired instruction.</p>
+    <p>Here are some examples of commands supported by the application:</p>
+    <ul>
+        <li>"Alexa, open YouTube."</li>
+        <li>"Alexa, open Visual Studio Code."</li>
+        <li>"Alexa, close Chrome."</li>
+        <li>"Alexa, play video."</li>
+        <li>"Alexa, pause video."</li>
+        <li>"Alexa, goodbye."</li>
+    </ul>
+    <p>Once a command is received, the program processes it and tries to identify the action requested by the user. It then calls the appropriate function and, whenever possible, gives a spoken response to confirm what happened.</p>
+
+    <h3>2.2. Project Objectives</h3>
+    <p>When I started working on this project, I wanted to build something practical rather than just write a program that displays information on the screen.</p>
+    <p>I focused on a few main objectives:</p>
+    <ul>
+        <li><strong>Voice control:</strong> Make it possible to interact with the computer without typing every instruction.</li>
+        <li><strong>Opening websites:</strong> Access frequently used websites through simple commands.</li>
+        <li><strong>Application management:</strong> Launch or close selected desktop applications.</li>
+        <li><strong>Video control:</strong> Play and pause videos using voice instructions.</li>
+        <li><strong>Voice responses:</strong> Allow the assistant to respond instead of displaying messages only in the terminal.</li>
+        <li><strong>Time saving:</strong> Make some common computer operations quicker and easier.</li>
+    </ul>
+    <p>I also wanted to keep the code organized so that I could add more commands and features later.</p>
+
+    <h2>3. Functional and Technical Requirements</h2>
+    <h3>3.1. Functional Requirements</h3>
+    <p>The following table summarizes the functionalities I planned to include in the project.</p>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Requirement</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>FR01</td>
+            <td>Voice recognition</td>
+            <td>Capture the user's voice and convert it into text.</td>
+        </tr>
+        <tr>
+            <td>FR02</td>
+            <td>Activation keyword</td>
+            <td>Check whether the command starts with "Alexa".</td>
+        </tr>
+        <tr>
+            <td>FR03</td>
+            <td>Website navigation</td>
+            <td>Open predefined websites in the default browser.</td>
+        </tr>
+        <tr>
+            <td>FR04</td>
+            <td>Application launching</td>
+            <td>Open desktop applications through the Windows Start menu.</td>
+        </tr>
+        <tr>
+            <td>FR05</td>
+            <td>Application termination</td>
+            <td>Find and terminate selected running processes.</td>
+        </tr>
+        <tr>
+            <td>FR06</td>
+            <td>Video control</td>
+            <td>Play or pause videos using keyboard automation.</td>
+        </tr>
+        <tr>
+            <td>FR07</td>
+            <td>Voice responses</td>
+            <td>Respond to the user using a computer-generated voice.</td>
+        </tr>
+        <tr>
+            <td>FR08</td>
+            <td>Help system</td>
+            <td>Inform the user about the available commands.</td>
+        </tr>
+        <tr>
+            <td>FR09</td>
+            <td>Application exit</td>
+            <td>Stop the assistant when an exit command is received.</td>
+        </tr>
+    </table>
+
+    <h3>3.2. Hardware Requirements</h3>
+    <p>Since the application relies on voice interaction, it needs a few basic hardware components:</p>
+    <ul>
+        <li><strong>Computer:</strong> A machine running Windows.</li>
+        <li><strong>Microphone:</strong> Used to capture the user's voice.</li>
+        <li><strong>Speakers or headphones:</strong> Used to hear Alexa's responses.</li>
+        <li><strong>Internet connection:</strong> Required for Google's online speech recognition service.</li>
+    </ul>
+
+    <h3>3.3. Software Requirements</h3>
+    <p>The software requirements are:</p>
+    <ul>
+        <li><strong>Operating system:</strong> Microsoft Windows.</li>
+        <li><strong>Programming language:</strong> Python 3.</li>
+        <li><strong>Libraries:</strong> SpeechRecognition, PyAutoGUI, pyttsx3, and psutil.</li>
+        <li><strong>Development environment:</strong> Any Python-compatible code editor or IDE.</li>
+    </ul>
+
+    <h2>4. Technologies Used</h2>
+    <p>I chose Python for this project mainly because it is relatively easy to work with and offers a large number of libraries for automation and system interaction.</p>
+    <p>Instead of implementing everything from scratch, I used existing libraries, each responsible for a specific part of the application.</p>
+
+    <h3>4.1. SpeechRecognition</h3>
+    <p>The first library I needed was <strong>SpeechRecognition</strong>, since the whole project depends on understanding what the user says.</p>
+    <p>It allows the program to capture audio through a microphone and convert spoken words into text.</p>
+    <p>I mainly used two functions:</p>
+    <ul>
+        <li><code>recognize_google()</code>: Sends the recorded audio to Google's speech recognition service and returns the recognized sentence.</li>
+        <li><code>adjust_for_ambient_noise()</code>: Helps the recognizer adapt to the surrounding noise before recording.</li>
+    </ul>
+    <p>For example, when I say "Alexa, open YouTube", the library converts my speech into text so that the rest of the program can process it.</p>
+
+    <h3>4.2. PyAutoGUI</h3>
+    <p><strong>PyAutoGUI</strong> is the library I used whenever Alexa needed to interact with the keyboard.</p>
+    <p>One of its main uses in my project is opening desktop applications through the Windows Start menu.</p>
+    <p>Here is the code responsible for this operation:</p>
+    <pre><code>pyautogui.press('win')
+pyautogui.write(app_name, interval=0.05)
+pyautogui.press('enter')</code></pre>
+    <p>The program presses the Windows key, types the application's name, and presses Enter.</p>
+    <p>I also used PyAutoGUI to simulate the spacebar when controlling video playback.</p>
+
+    <h3>4.3. pyttsx3</h3>
+    <p>I didn't want Alexa to communicate only through text displayed in the terminal. I wanted it to have spoken responses as well.</p>
+    <p>For this reason, I used <strong>pyttsx3</strong>, a library that converts text into speech.</p>
+    <p>It also allowed me to configure some voice settings, such as:</p>
+    <ul>
+        <li><strong>Voice:</strong> Selects one of the available voices.</li>
+        <li><strong>Rate:</strong> Controls the speaking speed.</li>
+        <li><strong>Volume:</strong> Adjusts the volume of the generated speech.</li>
+    </ul>
+    <p>This library is used whenever Alexa needs to respond to the user.</p>
+
+    <h3>4.4. Webbrowser</h3>
+    <p>The <code>webbrowser</code> module is part of Python's standard library, so there was no need to install it separately.</p>
+    <p>I used it to open websites in the default browser.</p>
+    <p>For example, if the user asks Alexa to open YouTube, the program finds the corresponding URL and passes it to the browser.</p>
+
+    <h3>4.5. psutil</h3>
+    <p>I also wanted Alexa to be able to close applications, not just open them.</p>
+    <p>For this purpose, I used <strong>psutil</strong>.</p>
+    <p>This library gives access to information about processes running on the computer. The program searches for the process associated with the requested application and attempts to terminate it.</p>
+    <p>For example, Chrome normally runs under the process name <code>chrome.exe</code>.</p>
+
+    <h3>4.6. subprocess and os</h3>
+    <p>I also imported the <code>subprocess</code> and <code>os</code> modules.</p>
+    <p>Both are included in Python's standard library and provide additional ways to interact with the operating system.</p>
+    <p>However, although they are imported in the current project, they are not directly used by the implemented functionalities.</p>
+
+    <h2>5. System Architecture and Design</h2>
+    <p>Before writing the different functions, I needed to think about how the application would work as a whole.</p>
+    <p>I decided to organize the project around a main class called <code>AlexaAssistant</code>. This allowed me to keep the different operations together instead of writing everything in one large block of code.</p>
+
+    <h3>5.1. General Architecture</h3>
+    <p>The assistant works through a sequence of operations.</p>
+    <p>It all starts when the user speaks. The microphone captures the audio, SpeechRecognition converts it into text, and the program checks whether the instruction starts with "Alexa".</p>
+    <p>After that, the command is analyzed and the corresponding function is called.</p>
+    <p>The general process can be summarized as follows:</p>
+    <ol>
+        <li>The user gives a voice command.</li>
+        <li>The microphone captures the audio.</li>
+        <li>SpeechRecognition converts the audio into text.</li>
+        <li>The program checks for the activation keyword.</li>
+        <li>The command is analyzed.</li>
+        <li>The requested operation is executed.</li>
+        <li>Alexa responds to the user.</li>
+    </ol>
+
+    <h3>5.2. Class Structure</h3>
+    <p>I used <strong>Object-Oriented Programming (OOP)</strong> to organize the application.</p>
+    <p>The main class, <code>AlexaAssistant</code>, contains the methods responsible for the different operations.</p>
+    <p>Here are the main methods:</p>
+    <table>
+        <tr>
+            <th>Method</th>
+            <th>Role</th>
+        </tr>
+        <tr>
+            <td><code>__init__()</code></td>
+            <td>Initializes the recognizer and the assistant's settings.</td>
+        </tr>
+        <tr>
+            <td><code>speak()</code></td>
+            <td>Makes Alexa respond using speech synthesis.</td>
+        </tr>
+        <tr>
+            <td><code>listen()</code></td>
+            <td>Captures and recognizes voice commands.</td>
+        </tr>
+        <tr>
+            <td><code>control_video()</code></td>
+            <td>Handles video playback commands.</td>
+        </tr>
+        <tr>
+            <td><code>open_website()</code></td>
+            <td>Opens a website in the browser.</td>
+        </tr>
+        <tr>
+            <td><code>open_application()</code></td>
+            <td>Launches a desktop application.</td>
+        </tr>
+        <tr>
+            <td><code>close_application()</code></td>
+            <td>Attempts to close a running application.</td>
+        </tr>
+        <tr>
+            <td><code>process_command()</code></td>
+            <td>Analyzes the command and selects the appropriate action.</td>
+        </tr>
+        <tr>
+            <td><code>run()</code></td>
+            <td>Keeps the assistant running and listening for instructions.</td>
+        </tr>
+    </table>
+
+    <h3>5.3. Command Processing</h3>
+    <p>Recognizing speech is only part of the job. The program also needs to understand what the user wants to do.</p>
+    <p>For this reason, I used conditional statements such as <code>if</code>, <code>elif</code>, and <code>else</code> inside the command-processing function.</p>
+    <p>The program checks the recognized sentence and compares it with different predefined conditions.</p>
+
+    <h2>6. Implementation and Development</h2>
+    <p>Once I had the general structure in mind, I started implementing the different parts of the assistant.</p>
+    <p>I worked on the functionalities separately and then connected them through the command-processing method.</p>
+
+    <h3>6.1. Initializing the Assistant</h3>
+    <p>The first thing I implemented was the initialization method.</p>
+    <p>It creates the speech recognizer and defines some settings that affect how the assistant listens.</p>
+    <pre><code>def __init__(self):
+    self.recognizer = sr.Recognizer()
+    self.recognizer.energy_threshold = 300
+    self.recognizer.dynamic_energy_threshold = True
+    self.recognizer.pause_threshold = 0.8
+    self.video_playing = False</code></pre>
+
+    <h3>6.2. Implementing Voice Recognition</h3>
+    <p>After initialization, I worked on the listening function.</p>
+    <p>The goal was to capture the user's voice and convert it into a text command.</p>
+    <pre><code>with sr.Microphone() as source:
+    self.recognizer.adjust_for_ambient_noise(source, duration=1)
+    audio = self.recognizer.listen(source, timeout=8, phrase_time_limit=10)
+    command = self.recognizer.recognize_google(audio, language='en-US').lower()</code></pre>
+
+    <h3>6.3. Making Alexa Speak</h3>
+    <p>I wanted the assistant to give feedback after receiving a command.</p>
+    <p>I implemented this using the <code>speak()</code> method and the <code>pyttsx3</code> library.</p>
+    <pre><code>def speak(self, text):
+    print(f"Alexa: {text}")
+    engine = pyttsx3.init()
+    voices = engine.getProperty('voices')
+    if len(voices) > 1:
+        engine.setProperty('voice', voices[1].id)
+    engine.setProperty('rate', 170)
+    engine.setProperty('volume', 1.0)
+    engine.say(text)
+    engine.runAndWait()
+    engine.stop()</code></pre>
+
+    <h3>6.4. Opening Websites</h3>
+    <p>One of the first practical features I wanted to add was opening websites through voice commands.</p>
+    <p>To do this, I created a dictionary containing the names of the websites and their corresponding addresses.</p>
+    <pre><code>websites = {
+    "google": "google.com",
+    "youtube": "youtube.com",
+    "facebook": "facebook.com",
+    "instagram": "instagram.com",
+    "amazon": "amazon.com",
+    "gmail": "gmail.com",
+    "chatgpt": "chatgpt.com",
+    "claude": "claude.ai",
+    "spotify": "spotify.com",
+    "github": "github.com"
+}</code></pre>
+
+    <h3>6.5. Opening Desktop Applications</h3>
+    <p>Opening a desktop application is slightly different from opening a website.</p>
+    <p>I decided to use PyAutoGUI to simulate the actions normally performed by a user through the Start menu.</p>
+    <pre><code>pyautogui.press('win')
+pyautogui.write(app_name, interval=0.05)
+pyautogui.press('enter')</code></pre>
+
+    <h3>6.6. Closing Desktop Applications</h3>
+    <p>I also implemented a feature that allows Alexa to close selected applications.</p>
+    <p>For this part, I used <code>psutil</code> instead of keyboard automation.</p>
+    <pre><code>process_map = {
+    "chrome": "chrome.exe",
+    "notepad": "notepad.exe",
+    "discord": "discord.exe",
+    "vscode": "code.exe",
+    "spotify": "spotify.exe"
+}</code></pre>
+
+    <h3>6.7. Controlling Video Playback</h3>
+    <p>Another feature I added was the ability to play and pause videos using voice commands.</p>
+    <p>I used PyAutoGUI to simulate pressing the spacebar.</p>
+    <pre><code>if action == "play" or action == "start":
+    pyautogui.press('space')
+    self.video_playing = True
+    self.speak("Playing video")
+elif action == "pause" or action == "stop":
+    pyautogui.press('space')
+    self.video_playing = False
+    self.speak("Video paused")</code></pre>
+
+    <h3>6.8. Processing Commands</h3>
+    <p>At this point, the individual functionalities were ready. The next step was to connect them.</p>
+    <p>I implemented the <code>process_command()</code> method for this purpose.</p>
+    <pre><code>if command is None:
+    return True
+if not command.startswith("alexa"):
+    print("Tip: Start your command with Alexa")
+    return True
+command = command.replace("alexa", "").strip()</code></pre>
+
+    <h3>6.9. Running the Assistant</h3>
+    <p>The final part is the <code>run()</code> method.</p>
+    <p>Its job is to keep Alexa running instead of executing only one command and then stopping.</p>
+    <p>I used a <code>while</code> loop so that the assistant could continuously listen for new instructions.</p>
+
+    <h2>7. Testing and Evaluation</h2>
+    <h3>7.1. Functional Testing</h3>
+    <table>
+        <tr>
+            <th>Test ID</th>
+            <th>Voice Command</th>
+            <th>Expected Result</th>
+        </tr>
+        <tr>
+            <td>T01</td>
+            <td>Alexa, open YouTube</td>
+            <td>Opens YouTube in the browser.</td>
+        </tr>
+        <tr>
+            <td>T02</td>
+            <td>Alexa, open Google</td>
+            <td>Opens Google in the browser.</td>
+        </tr>
+        <tr>
+            <td>T03</td>
+            <td>Alexa, open Notepad</td>
+            <td>Launches Notepad.</td>
+        </tr>
+        <tr>
+            <td>T04</td>
+            <td>Alexa, close Chrome</td>
+            <td>Attempts to close Chrome.</td>
+        </tr>
+        <tr>
+            <td>T05</td>
+            <td>Alexa, play video</td>
+            <td>Sends the spacebar command.</td>
+        </tr>
+        <tr>
+            <td>T06</td>
+            <td>Alexa, pause video</td>
+            <td>Sends the spacebar command.</td>
+        </tr>
+        <tr>
+            <td>T07</td>
+            <td>Alexa, help</td>
+            <td>Explains the available commands.</td>
+        </tr>
+        <tr>
+            <td>T08</td>
+            <td>Alexa, goodbye</td>
+            <td>Terminates the assistant.</td>
+        </tr>
+        <tr>
+            <td>T09</td>
+            <td>An unrecognized command</td>
+            <td>Provides an appropriate response.</td>
+        </tr>
+        <tr>
+            <td>T10</td>
+            <td>A command without Alexa</td>
+            <td>Ignores the instruction.</td>
+        </tr>
+    </table>
+
+    <h3>7.2. Error Handling</h3>
+    <p>While developing the application, I also had to consider what might happen when something goes wrong.</p>
+    <p>I used Python's <code>try</code> and <code>except</code> statements to handle these situations.</p>
+
+    <h3>7.3. Limitations</h3>
+    <p>Although I managed to implement the main features I had planned, the application still has some limitations.</p>
+    <ul>
+        <li><strong>Command recognition:</strong> The assistant relies on predefined keywords. It cannot understand every possible way of expressing the same instruction.</li>
+        <li><strong>Internet connection:</strong> The speech recognition feature depends on Google's online service, so an internet connection is required.</li>
+        <li><strong>Video playback:</strong> The spacebar method works only when the active window supports that shortcut.</li>
+        <li><strong>Closing applications:</strong> The use of <code>psutil</code> can terminate a process without giving the user an opportunity to save unfinished work.</li>
+        <li><strong>Supported applications:</strong> The current version only recognizes the websites and application names configured in its dictionaries.</li>
+    </ul>
+
+    <h3>7.4. Possible Improvements</h3>
+    <p>There are several things I would like to improve if I continue developing this project.</p>
+    <ul>
+        <li>Add a graphical interface instead of relying mainly on the terminal.</li>
+        <li>Implement offline speech recognition.</li>
+        <li>Support more websites and desktop applications.</li>
+        <li>Improve command recognition so that Alexa can understand different expressions for the same instruction.</li>
+        <li>Add more computer-control features.</li>
+        <li>Make the interaction more flexible and natural.</li>
+    </ul>
+
+    <h2>8. Conclusion</h2>
+    <p>Developing Alexa was a good opportunity to work on a practical Python project and see how different libraries can be combined to create a functional application.</p>
+    <p>I started with a simple idea: being able to control some computer operations using my voice. During the development, this idea turned into a desktop assistant capable of recognizing commands, opening websites, launching applications, closing selected processes, and controlling video playback.</p>
+    <p>The project also helped me improve my understanding of object-oriented programming, conditional statements, loops, and exception handling.</p>
+    <p>Nevertheless, I am satisfied with what I managed to build. It gave me a better understanding of how desktop automation works and encouraged me to explore more advanced ways of interacting with computers.</p>
+
+    <h2>9. References</h2>
+    <p>During the development of this project, I consulted the following documentation:</p>
+    <ol>
+        <li><strong>Python Documentation:</strong> https://docs.python.org/3/</li>
+        <li><strong>SpeechRecognition – Python Package:</strong> https://pypi.org/project/SpeechRecognition/</li>
+        <li><strong>PyAutoGUI Documentation:</strong> https://pyautogui.readthedocs.io/</li>
+        <li><strong>pyttsx3 – Python Package:</strong> https://pypi.org/project/pyttsx3/</li>
+        <li><strong>psutil Documentation:</strong> https://psutil.readthedocs.io/</li>
+        <li><strong>Python Webbrowser Documentation:</strong> https://docs.python.org/3/library/webbrowser.html</li>
+    </ol>
+
+</body>
+</html>
